@@ -25,7 +25,7 @@ export const FormChangePassword: React.FC<Props> = ({ code, ...props }) => {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       setSuccess("");
       try {
-        const response = await axiosClient.post("/password/change", {
+        const response = await axiosClient.post("/passwords/change", {
           email: values.email,
           password: values.password,
           code,

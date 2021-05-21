@@ -20,7 +20,7 @@ export const FormForgotPassword: React.FC<Props> = (props) => {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       setSuccess("");
       try {
-        const response = await axiosClient.post("/password/forgot", {
+        const response = await axiosClient.post("/passwords/forgot", {
           email: values.email,
         });
 
