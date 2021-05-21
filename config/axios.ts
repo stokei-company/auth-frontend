@@ -1,11 +1,13 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
+import { authHeader } from '~/utils/auth';
 import { AUTH_SERVER_URL } from '../environments';
 
 export const axiosClient = axios.create({
     baseURL: AUTH_SERVER_URL,
     headers: {
         "Content-type": "application/json",
+        ...authHeader(),
     }
 });
 

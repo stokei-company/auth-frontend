@@ -20,7 +20,7 @@ export const Input: React.FC<Props> = ({
   ...props
 }) => {
   return (
-    <FormControl id={props.id}>
+    <FormControl id={props.id} marginBottom={2}>
       {label && <FormLabel>{label}</FormLabel>}
 
       <ChakraInput
@@ -35,7 +35,7 @@ export const Input: React.FC<Props> = ({
         {...props}
       />
 
-      {errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}
+      {errorMessage && <FormHelperText color="red.500">{errorMessage}</FormHelperText>}
 
       {helperMessage && <FormHelperText>{helperMessage}</FormHelperText>}
     </FormControl>

@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
-import { FormLogin } from "~/components/forms/form-login";
-import { Struct } from "~/components/pages/struct";
+import { FormSignUp } from "~/components/forms/form-signup";
+import Struct from "~/components/pages/struct";
 import { axiosClient } from "~/config/axios";
 import { AppModel } from "~/shared/@types/app";
 
-export default function Home({ app, redirectUri, ...props }) {
+export default function SignUp({ app, redirectUri, ...props }) {
   return (
     <Struct redirectUri={redirectUri} appId={app && app.id}>
       <Flex
@@ -24,7 +24,7 @@ export default function Home({ app, redirectUri, ...props }) {
             borderRadius="md"
             padding={16}
           >
-            <FormLogin app={app} redirectUri={redirectUri} />
+            <FormSignUp app={app} redirectUri={redirectUri} />
           </Box>
         </Box>
       </Flex>
