@@ -1,9 +1,9 @@
-import { Flex, Heading, Link } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { ButtonOutlined } from "~/components/button";
 import Struct from "~/components/pages/struct";
-import { setToken } from "~/utils/auth";
+import { removeToken } from "~/utils/auth";
 
 interface Props {}
 
@@ -11,7 +11,7 @@ export default function Logout({ ...props }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    setToken("");
+    removeToken();
   }, []);
 
   return (
