@@ -1,4 +1,4 @@
-import { Flex, Link } from "@chakra-ui/react";
+import { Flex, Link, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BoxResponse } from "~/components/pages/callback/box-response";
@@ -35,7 +35,7 @@ export default function Callback({ ...props }: Props) {
   return (
     <Struct redirectUri={redirectUri + ""}>
       <Flex
-        minHeight="100vh"
+        minHeight="90vh"
         justifyContent="center"
         alignItems="center"
         flexDir="column"
@@ -48,12 +48,26 @@ export default function Callback({ ...props }: Props) {
 
         <BoxResponse success={success} />
 
-        {redirectUri && (
+        {redirectUri && success && (
+          <Text mt={6}>
+            Aguarde ser redirecionado ou{" "}
+            <Link
+              fontWeight="bold"
+              color={colors.primary.light}
+              _hover={{ color: colors.primary.light }}
+              href={redirectUri + ""}
+            >
+              clique aqui.
+            </Link>
+          </Text>
+        )}
+
+        {redirectUri && !success && (
           <Link
             mt={6}
             fontWeight="bold"
-            color={colors.primary.light}
-            _hover={{ color: colors.primary.light }}
+            color={"red.500"}
+            _hover={{ color: "red.500" }}
             href={redirectUri + ""}
           >
             Voltar
