@@ -9,8 +9,7 @@ export default function ForgotPassword({ ...props }: Props) {
     <Struct>
       <Flex
         justifyContent="center"
-        paddingTop={["100px", "100px", "120px", "120px"]}
-        paddingBottom={"50px"}
+        paddingY={30}
       >
         <Box
           width="100%"

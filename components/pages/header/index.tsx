@@ -46,14 +46,10 @@ export const Header: React.FC<Props> = ({ redirectUri, appId }) => {
 
   return (
     <Flex
-      position="absolute"
       width="100%"
       alignItems="center"
       paddingY={5}
       paddingX={10}
-      top="0"
-      left="0"
-      right="0"
     >
       <Box margin={["auto", "auto", "0px", "0px"]}>
         <NextLink href="/">

@@ -11,7 +11,7 @@ export const Struct: React.FC<Props> = ({ redirectUri, appId, children }) => {
   return (
     <Box>
       <Header redirectUri={redirectUri} appId={appId} />
-      <Box width="100%" height="auto" minHeight="100%" as="main">
+      <Box width="100%" height="auto" minHeight="70vh">
         {children}
       </Box>
       <Footer />

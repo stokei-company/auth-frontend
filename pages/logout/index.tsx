@@ -17,7 +17,7 @@ export default function Logout({ ...props }: Props) {
   return (
     <Struct>
       <Flex
-        minHeight="100vh"
+        minHeight="70vh"
         justifyContent="center"
         alignItems="center"
         flexDir="column"

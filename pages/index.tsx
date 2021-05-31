@@ -10,8 +10,7 @@ export default function Home({ app, redirectUri, ...props }) {
     <Struct redirectUri={redirectUri} appId={app && app.id}>
       <Flex
         justifyContent="center"
-        paddingTop={["100px", "100px", "120px", "120px"]}
-        paddingBottom={"50px"}
+        paddingY={30}
       >
         <Box
           width="100%"

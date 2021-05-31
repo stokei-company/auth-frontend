@@ -26,20 +26,20 @@ export default function Callback({ ...props }: Props) {
       setToken(String(token));
     }
 
-    if (String(redirectUri)) {
+    if (redirectUri && String(redirectUri)) {
       window.location.href = redirectUri + "";
     }
-    window.location.href = PAINEL_URL;
+    router.replace("/redirect");
   }, [token, redirectUri]);
 
   return (
     <Struct redirectUri={redirectUri + ""}>
       <Flex
-        minHeight="90vh"
+        minHeight="70vh"
         justifyContent="center"
         alignItems="center"
         flexDir="column"
-        padding={10}
+        paddingY={30}
       >
         <Header
           title={success ? "Sucesso" : "Ooops!"}
