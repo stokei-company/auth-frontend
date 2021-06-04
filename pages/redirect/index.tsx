@@ -19,10 +19,14 @@ export default function Home({ ...props }: Props) {
       >
         <Header title="O que você é?" />
 
-        <SimpleGrid columns={2} spacing={10} padding={5}>
-          <Option title="Aluno" icon={<Icon as={FaUser} />} link={PAINEL_URL} />
+        <SimpleGrid columns={2} spacing={[5, 5, 10, 10]} padding={[2, 2, 5, 5]}>
           <Option
-            title="Professor"
+            title="Aluno(a)"
+            icon={<Icon as={FaUser} />}
+            link={PAINEL_URL}
+          />
+          <Option
+            title="Parceiro(a)"
             icon={<Icon as={FaUserTie} />}
             link={PAINEL_ADMIN_URL}
           />

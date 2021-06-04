@@ -16,7 +16,7 @@ export const Option: React.FC<Props> = ({ title, icon, link }) => {
         alignItems="center"
         justifyContent="center"
         borderWidth="2px"
-        paddingY="5"
+        paddingY="10"
         paddingX="10"
         _hover={{
           borderColor: colors.primary.dark,
