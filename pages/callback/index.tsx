@@ -25,8 +25,7 @@ export default function Callback({ ...props }: Props) {
     if (token) {
       setToken(String(token));
     }
-
-    if (redirectUri && String(redirectUri)) {
+    if (redirectUri && String(redirectUri) !== "") {
       window.location.href = redirectUri + "";
     }
     router.replace("/redirect");
