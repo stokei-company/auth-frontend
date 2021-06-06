@@ -86,7 +86,7 @@ export const FormChangePassword: React.FC<Props> = ({ code, ...props }) => {
           <Button
             type="submit"
             isLoading={formik.isSubmitting}
-            loadingText="Entrando"
+            loadingText="Salvando"
             spinnerPlacement="end"
             disabled={formik.isSubmitting || !formik.isValid}
             marginTop={6}

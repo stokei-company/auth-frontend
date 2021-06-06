@@ -116,7 +116,7 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
           <Button
             type="submit"
             isLoading={formik.isSubmitting}
-            loadingText="Entrando"
+            loadingText="Salvando"
             spinnerPlacement="end"
             disabled={formik.isSubmitting || !formik.isValid}
             marginTop={6}

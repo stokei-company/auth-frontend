@@ -70,7 +70,7 @@ export const FormForgotPassword: React.FC<Props> = (props) => {
           <Button
             type="submit"
             isLoading={formik.isSubmitting}
-            loadingText="Entrando"
+            loadingText="Salvando"
             spinnerPlacement="end"
             disabled={formik.isSubmitting || !formik.isValid}
             marginTop={6}

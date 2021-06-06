@@ -3,7 +3,7 @@ import { mountUri } from "../uri/mount-uri";
 
 export const SITE_NAME = "Stokei";
 
-export const logoUrl = "https://assets.stokei.com/default/logos/logo.png";
+export const logoUrl = "https://assets.stokei.com/logos/logo.png";
 
 interface ParamsSocialMediaURI {
     readonly redirectUri?: string;
