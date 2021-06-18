@@ -4,7 +4,6 @@ import NextLink from "next/link";
 import React from "react";
 import * as Yup from "yup";
 import { Button, FacebookButton, GoogleButton } from "~/components/button";
-import { Divider } from "~/components/divider";
 import { Input } from "~/components/input";
 import { axiosClient } from "~/config/axios";
 import { AppModel } from "~/shared/@types/app";
@@ -70,6 +69,31 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         </Heading>
       )}
       {app && <AppBox app={app} />}
+
+      <Stack direction="row" align="center" spacing={10} marginBottom={10}>
+        <GoogleButton
+          flex="1"
+          onClick={async () => {
+            window.location.href = await googleAuthURI({
+              redirectUri,
+              appId: app && app.id,
+            });
+          }}
+        >
+          Google
+        </GoogleButton>
+        <FacebookButton
+          flex="1"
+          onClick={async () => {
+            window.location.href = await facebookAuthURI({
+              redirectUri,
+              appId: app && app.id,
+            });
+          }}
+        >
+          Facebook
+        </FacebookButton>
+      </Stack>
 
       <Flex height="auto" flexDir="column" justifyContent="stretch">
         <form
@@ -142,37 +166,6 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             </NextLink>
           </Text>
         </form>
-
-        <Divider />
-
-        <Flex alignItems="center" justifyContent="center">
-          <Text fontSize="sm">Ou entre com</Text>
-        </Flex>
-
-        <Stack direction="row" align="center" spacing={10} marginTop={6}>
-          <GoogleButton
-            flex="1"
-            onClick={async () => {
-              window.location.href = await googleAuthURI({
-                redirectUri,
-                appId: app && app.id,
-              });
-            }}
-          >
-            Google
-          </GoogleButton>
-          <FacebookButton
-            flex="1"
-            onClick={async () => {
-              window.location.href = await facebookAuthURI({
-                redirectUri,
-                appId: app && app.id,
-              });
-            }}
-          >
-            Facebook
-          </FacebookButton>
-        </Stack>
       </Flex>
     </Flex>
   );
