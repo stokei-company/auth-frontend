@@ -94,12 +94,43 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         size="lg"
         textAlign="center"
         lineHeight="shorter"
-        marginBottom="6"
+        marginBottom={10}
       >
         Cadastre-se
       </Heading>
 
       {app && <AppBox app={app} />}
+
+      <Stack direction="row" align="center" spacing={10} marginBottom={10}>
+        <GoogleButton
+          flex="1"
+          onClick={async () => {
+            window.location.href = await googleAuthURI({
+              redirectUri,
+              appId: app && app.id,
+            });
+          }}
+        >
+          Google
+        </GoogleButton>
+        <FacebookButton
+          flex="1"
+          onClick={async () => {
+            window.location.href = await facebookAuthURI({
+              redirectUri,
+              appId: app && app.id,
+            });
+          }}
+        >
+          Facebook
+        </FacebookButton>
+      </Stack>
+
+      <Flex alignItems="center" justifyContent="center" marginBottom={8}>
+        <Text color="gray.600" fontSize="sm" textTransform="uppercase">
+          Cadastre-se com o email
+        </Text>
+      </Flex>
 
       <Flex height="auto" flexDir="column">
         <form
@@ -150,6 +181,16 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             {...formik.getFieldProps("password")}
           />
 
+          <Flex>
+            <Text color="gray.500" fontSize="xs">
+              Ao se cadastrar, você concorda com os{" "}
+              <NextLink href="/terms">
+                <Link color={colors.primary.dark}>termos de uso</Link>
+              </NextLink>
+              .
+            </Text>
+          </Flex>
+
           {error && <Text color="red.500">{error}</Text>}
 
           <Button
@@ -182,37 +223,6 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
           </Text>
         </form>
       </Flex>
-
-      <Divider />
-
-      <Flex alignItems="center" justifyContent="center">
-        <Text fontSize="sm">Ou entre com</Text>
-      </Flex>
-
-      <Stack direction="row" align="center" spacing={10} marginTop={6}>
-        <GoogleButton
-          flex="1"
-          onClick={async () => {
-            window.location.href = await googleAuthURI({
-              redirectUri,
-              appId: app && app.id,
-            });
-          }}
-        >
-          Google
-        </GoogleButton>
-        <FacebookButton
-          flex="1"
-          onClick={async () => {
-            window.location.href = await facebookAuthURI({
-              redirectUri,
-              appId: app && app.id,
-            });
-          }}
-        >
-          Facebook
-        </FacebookButton>
-      </Stack>
     </Flex>
   );
 };
