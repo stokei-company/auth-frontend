@@ -185,7 +185,7 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             <Text color="gray.500" fontSize="xs">
               Ao se cadastrar, você concorda com os{" "}
               <NextLink href="/terms">
-                <Link color={colors.primary.dark}>termos de uso</Link>
+                <Link color={colors.primary.main}>termos de uso</Link>
               </NextLink>
               .
             </Text>
@@ -213,7 +213,7 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
               }}
             >
               <Link
-                color={colors.primary.dark}
+                color={colors.primary.main}
                 fontWeight="bold"
                 _hover={{ color: colors.primary.light }}
               >

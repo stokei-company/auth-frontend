@@ -9,7 +9,7 @@ export const Link: React.FC<Props> = ({ children, ...props }) => {
       fontSize="lg"
       borderBottomWidth="2px"
       borderBottomColor="transparent"
-      _hover={{ color: colors.primary.dark, borderColor: colors.primary.dark }}
+      _hover={{ color: colors.primary.main, borderColor: colors.primary.main }}
       {...props}
     >
       {children}

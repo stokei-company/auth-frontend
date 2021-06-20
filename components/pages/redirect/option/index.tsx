@@ -19,7 +19,7 @@ export const Option: React.FC<Props> = ({ title, icon, link }) => {
         paddingY="10"
         paddingX="10"
         _hover={{
-          borderColor: colors.primary.dark,
+          borderColor: colors.primary.main,
           backgroundColor: "gray.100",
         }}
       >
@@ -28,7 +28,7 @@ export const Option: React.FC<Props> = ({ title, icon, link }) => {
           padding={4}
           fontSize="2xl"
           color="white"
-          backgroundColor={colors.primary.dark}
+          backgroundColor={colors.primary.main}
           alignItems="center"
           borderRadius="full"
           mb={4}

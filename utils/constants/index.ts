@@ -27,7 +27,8 @@ export const facebookAuthURI = (data: ParamsSocialMediaURI) => authURI(AUTH_SERV
 
 export const colors = {
     primary: {
-        dark: "green.600",
+        dark: "green.700",
+        main: "green.600",
         light: "green.500",
     }
 };

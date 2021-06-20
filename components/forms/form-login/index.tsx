@@ -129,7 +129,7 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
               alignSelf="flex-start"
               marginTop={2}
               fontSize="sm"
-              color={colors.primary.dark}
+              color={colors.primary.main}
               fontWeight="bold"
               _hover={{ color: colors.primary.light }}
             >
@@ -157,7 +157,7 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
               }}
             >
               <Link
-                color={colors.primary.dark}
+                color={colors.primary.main}
                 fontWeight="bold"
                 _hover={{ color: colors.primary.light }}
               >

@@ -12,7 +12,7 @@ export const Button: React.FC<ChakraButtonProps> = (props) => {
   return (
     <ChakraButton
       color={props.color || "white"}
-      backgroundColor={props.backgroundColor || colors.primary.dark}
+      backgroundColor={props.backgroundColor || colors.primary.main}
       height="40px"
       minHeight="40px"
       borderRadius="full"
@@ -29,7 +29,7 @@ export const Button: React.FC<ChakraButtonProps> = (props) => {
 export const ButtonClean: React.FC<ChakraButtonProps> = (props) => {
   return (
     <ChakraButton
-      color={props.color || colors.primary.dark}
+      color={props.color || colors.primary.main}
       height="40px"
       minHeight="40px"
       borderRadius="full"
@@ -43,8 +43,8 @@ export const ButtonClean: React.FC<ChakraButtonProps> = (props) => {
 export const ButtonOutlined: React.FC<ChakraButtonProps> = (props) => {
   return (
     <ChakraButton
-      color={props.color || colors.primary.dark}
-      borderColor={props.borderColor || colors.primary.dark}
+      color={props.color || colors.primary.main}
+      borderColor={props.borderColor || colors.primary.main}
       height="40px"
       minHeight="40px"
       borderRadius="full"
