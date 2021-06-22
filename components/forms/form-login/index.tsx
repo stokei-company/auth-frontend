@@ -68,7 +68,16 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
           Login
         </Heading>
       )}
-      {app && <AppBox app={app} />}
+      {app && (
+        <Flex
+          width="full"
+          marginBottom={5}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <AppBox app={app} />
+        </Flex>
+      )}
 
       <Stack direction="row" align="center" spacing={10} marginBottom={10}>
         <GoogleButton
