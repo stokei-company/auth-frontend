@@ -2,6 +2,7 @@ import Head from "next/head";
 import ThemeContainer from "../contexts/theme/ThemeContainer";
 import Router from "next/router";
 import NProgress from "nprogress";
+import { faviconUrl } from "~/utils/constants";
 
 Router.events.on("routeChangeStart", (url) => {
   NProgress.start();
@@ -17,7 +18,7 @@ function MyApp({ Component, pageProps }) {
 
         <title>Stokei</title>
 
-        <link rel="shortcut icon" href="/favicon.png" />
+        <link rel="shortcut icon" href={faviconUrl} />
 
         {/* Import CSS for nprogress */}
         <link rel="stylesheet" type="text/css" href="/nprogress.css" />
