@@ -8,10 +8,7 @@ import { AppModel } from "~/shared/@types/app";
 export default function Home({ app, redirectUri, ...props }) {
   return (
     <Struct redirectUri={redirectUri} appId={app && app.id}>
-      <Flex
-        justifyContent="center"
-        paddingY={30}
-      >
+      <Flex justifyContent="center" paddingY={30}>
         <Box
           width="100%"
           maxWidth={["100%", "100%", "500px", "500px"]}
@@ -32,11 +29,10 @@ export default function Home({ app, redirectUri, ...props }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const appId = context.query && context.query.appId;
-  const redirectUri =
-    context.query && context.query.redirectUri
-      ? context.query.redirectUri
-      : null;
+  const appId = context?.query?.appId;
+  const redirectUri = context?.query?.redirectUri
+    ? context.query.redirectUri
+    : null;
 
   let app: AppModel = null;
   if (appId) {

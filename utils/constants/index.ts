@@ -11,7 +11,7 @@ interface ParamsSocialMediaURI {
     readonly appId?: string;
 }
 
-const authURI = (baseURL: string, data: ParamsSocialMediaURI) => mountUri(baseURL, [
+const authURI = async (baseURL: string, data: ParamsSocialMediaURI) => await mountUri(baseURL, [
     data.redirectUri && {
         key: "redirectUri",
         value: data.redirectUri,

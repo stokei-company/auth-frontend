@@ -7,7 +7,7 @@ export const mountUri = async (base: string, params: Param[]) => {
     try {
         const url = new URL(base);
         await params.map(param => {
-            if (param.key) {
+            if (param?.key) {
                 let value = "";
                 if (param.value) {
                     value = param.value;

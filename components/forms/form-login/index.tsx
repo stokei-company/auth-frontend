@@ -83,10 +83,11 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         <GoogleButton
           flex="1"
           onClick={async () => {
-            window.location.href = await googleAuthURI({
+            const href = await googleAuthURI({
               redirectUri,
               appId: app && app.id,
             });
+            window.location.href = href;
           }}
         >
           Google
@@ -94,10 +95,11 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         <FacebookButton
           flex="1"
           onClick={async () => {
-            window.location.href = await facebookAuthURI({
+            const href = await facebookAuthURI({
               redirectUri,
               appId: app && app.id,
             });
+            window.location.href = href;
           }}
         >
           Facebook
