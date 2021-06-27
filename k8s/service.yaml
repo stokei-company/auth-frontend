@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: auth-frontend-service
+spec:
+  type: ClusterIP
+  selector:
+    app: auth-frontend
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+#    - name: https
+#      protocol: TCP
+#      port: 443
+#      targetPort: 80

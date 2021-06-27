@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { Button, ButtonOutlined } from "~/components/button";
 import { logoUrl } from "~/utils/constants";
-import { Link } from "./link";
 
 interface Props {
   readonly redirectUri?: string;
@@ -45,18 +44,13 @@ export const Header: React.FC<Props> = ({ redirectUri, appId }) => {
   }, [redirectUri, appId]);
 
   return (
-    <Flex
-      width="100%"
-      alignItems="center"
-      paddingY={5}
-      paddingX={10}
-    >
+    <Flex width="100%" alignItems="center" paddingY={5} paddingX={10}>
       <Box margin={["auto", "auto", "0px", "0px"]}>
         <NextLink href="/">
-          <Image height={10} src={logoUrl} cursor="pointer" />
+          <Image height={10} src={logoUrl} cursor="pointer" alt="Logo" />
         </NextLink>
       </Box>
-{/* 
+      {/* 
       <Spacer display={["none", "none", "flex", "flex"]} />
 
       <Stack
