@@ -54,6 +54,9 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save ${{env.CLUSTER_NAME}}
 
       - name: Deploy to Kubernetes
+        run: kubectl apply -f ./k8s -R
+        
+      - name: Set image to Kubernetes
         run: kubectl set image deployment/${{env.KUBERNETES_DEPLOYMENT_NAME}} ${{env.IMAGE_NAME}}=${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Verify deployment
