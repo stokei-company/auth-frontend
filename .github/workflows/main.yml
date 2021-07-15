@@ -27,10 +27,15 @@ jobs:
           token: ${{ env.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Build container image
-        run: docker build -t ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}  \
-              --build-arg=NEXT_PUBLIC_AUTH_SERVER_URL=${{ secrets.NEXT_PUBLIC_AUTH_SERVER_URL }} \
-              --build-arg=NEXT_PUBLIC_PAINEL_URL=${{ secrets.NEXT_PUBLIC_PAINEL_URL }} \
-              --build-arg=NEXT_PUBLIC_PAINEL_ADMIN_URL=${{ secrets.NEXT_PUBLIC_PAINEL_ADMIN_URL }} $GITHUB_WORKSPACE
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_AUTH_SERVER_URL=${{ secrets.NEXT_PUBLIC_AUTH_SERVER_URL }}
+            NEXT_PUBLIC_PAINEL_URL=${{ secrets.NEXT_PUBLIC_PAINEL_URL }}
+            NEXT_PUBLIC_PAINEL_ADMIN_URL=${{ secrets.NEXT_PUBLIC_PAINEL_ADMIN_URL }}
 
       - name: Docker Login
         run: docker login -u ${{env.DOCKER_USERNAME}} -p ${{env.DOCKER_PASSWORD}}
