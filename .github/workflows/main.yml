@@ -30,7 +30,7 @@ jobs:
         run: docker build -t ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}  \
               --build-arg=NEXT_PUBLIC_AUTH_SERVER_URL=${{ secrets.NEXT_PUBLIC_AUTH_SERVER_URL }} \
               --build-arg=NEXT_PUBLIC_PAINEL_URL=${{ secrets.NEXT_PUBLIC_PAINEL_URL }} \
-              --build-arg=NEXT_PUBLIC_PAINEL_ADMIN_URL=${{ secrets.NEXT_PUBLIC_PAINEL_ADMIN_URL }} .
+              --build-arg=NEXT_PUBLIC_PAINEL_ADMIN_URL=${{ secrets.NEXT_PUBLIC_PAINEL_ADMIN_URL }} $GITHUB_WORKSPACE
 
       - name: Docker Login
         run: docker login -u ${{env.DOCKER_USERNAME}} -p ${{env.DOCKER_PASSWORD}}
