@@ -10,6 +10,7 @@ import { AppModel } from "~/shared/@types/app";
 import { setToken } from "~/utils/auth";
 import { colors, facebookAuthURI, googleAuthURI } from "~/utils/constants";
 import { AppBox } from "../app-box";
+import { SocialAuthBox } from "../social-auth-box";
 
 interface Props {
   readonly app: AppModel;
@@ -79,32 +80,13 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         </Flex>
       )}
 
-      <Stack direction="row" align="center" spacing={10} marginBottom={10}>
-        <GoogleButton
-          flex="1"
-          onClick={async () => {
-            const href = await googleAuthURI({
-              redirectUri,
-              appId: app && app.id,
-            });
-            window.location.href = href;
-          }}
-        >
-          Google
-        </GoogleButton>
-        <FacebookButton
-          flex="1"
-          onClick={async () => {
-            const href = await facebookAuthURI({
-              redirectUri,
-              appId: app && app.id,
-            });
-            window.location.href = href;
-          }}
-        >
-          Facebook
-        </FacebookButton>
-      </Stack>
+      <SocialAuthBox redirectUri={redirectUri} appId={app?.id} />
+
+      <Flex alignItems="center" justifyContent="center" marginBottom={8}>
+        <Text color="gray.600" fontSize="sm" textTransform="uppercase">
+          Entre com o email
+        </Text>
+      </Flex>
 
       <Flex height="auto" flexDir="column" justifyContent="stretch">
         <form

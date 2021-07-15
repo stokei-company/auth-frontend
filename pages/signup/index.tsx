@@ -21,7 +21,7 @@ export default function SignUp({ app, redirectUri, ...props }) {
             width="100%"
             backgroundColor="gray.50"
             borderRadius="md"
-            padding={16}
+            padding={[8, 8, 16, 16]}
           >
             <FormSignUp app={app} redirectUri={redirectUri} />
           </Box>

@@ -13,7 +13,7 @@ spec:
         app: auth-frontend
     spec:
       imagePullSecrets:
-      - name: regcred
+      - name: registry-credentials
       containers:
         - name: auth-frontend
           image: stokei/auth-frontend:latest
@@ -27,7 +27,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: urls-configmap
-                  key: apps-gateway-url
+                  key: auth-gateway-url
             - name: NEXT_PUBLIC_PAINEL_URL
               valueFrom:
                 configMapKeyRef:

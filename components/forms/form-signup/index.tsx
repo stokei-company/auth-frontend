@@ -1,16 +1,16 @@
-import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
+import { Flex, Heading, Link, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import NextLink from "next/link";
 import { useState } from "react";
 import * as Yup from "yup";
-import { Button, FacebookButton, GoogleButton } from "~/components/button";
-import { Divider } from "~/components/divider";
+import { Button } from "~/components/button";
 import { Input } from "~/components/input";
 import { axiosClient } from "~/config/axios";
 import { AppModel } from "~/shared/@types/app";
 import { setToken } from "~/utils/auth";
-import { colors, facebookAuthURI, googleAuthURI } from "~/utils/constants";
+import { colors } from "~/utils/constants";
 import { AppBox } from "../app-box";
+import { SocialAuthBox } from "../social-auth-box";
 
 interface Props {
   readonly app: AppModel;
@@ -94,7 +94,7 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         size="lg"
         textAlign="center"
         lineHeight="shorter"
-        marginBottom={10}
+        marginBottom="6"
       >
         Cadastre-se
       </Heading>
@@ -110,30 +110,7 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         </Flex>
       )}
 
-      <Stack direction="row" align="center" spacing={10} marginBottom={10}>
-        <GoogleButton
-          flex="1"
-          onClick={async () => {
-            window.location.href = await googleAuthURI({
-              redirectUri,
-              appId: app && app.id,
-            });
-          }}
-        >
-          Google
-        </GoogleButton>
-        <FacebookButton
-          flex="1"
-          onClick={async () => {
-            window.location.href = await facebookAuthURI({
-              redirectUri,
-              appId: app && app.id,
-            });
-          }}
-        >
-          Facebook
-        </FacebookButton>
-      </Stack>
+      <SocialAuthBox redirectUri={redirectUri} appId={app?.id} />
 
       <Flex alignItems="center" justifyContent="center" marginBottom={8}>
         <Text color="gray.600" fontSize="sm" textTransform="uppercase">
