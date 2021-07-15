@@ -1,35 +1,27 @@
 import { Flex, Link, Text } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BoxResponse } from "~/components/pages/callback/box-response";
 import { Header } from "~/components/pages/callback/header";
 import Struct from "~/components/pages/struct";
-import { PAINEL_URL } from "~/environments";
 import { setToken } from "~/utils/auth";
 import { colors } from "~/utils/constants";
 
-interface Props {}
+interface Props {
+  readonly token?: string;
+  readonly redirectUri?: string;
+}
 
-export default function Callback({ ...props }: Props) {
-  const [init, setInit] = useState(true);
+export default function Callback({ token, redirectUri, ...props }: Props) {
   const router = useRouter();
-  const { token, redirectUri } = router.query || {};
   const success = token ? true : false;
 
   useEffect(() => {
-    if (init) {
-      setInit((i) => false);
-      return null;
+    if(token){
+      router.replace('/redirect');
     }
-
-    if (token) {
-      setToken(String(token));
-    }
-    if (redirectUri && String(redirectUri) !== "") {
-      window.location.href = redirectUri + "";
-    }
-    router.replace("/redirect");
-  }, [init, router, token, redirectUri]);
+  }, [token]);
 
   return (
     <Struct redirectUri={redirectUri + ""}>
@@ -76,3 +68,32 @@ export default function Callback({ ...props }: Props) {
     </Struct>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const token = context?.query?.token
+    ? (context?.query?.token + "").trim()
+    : null;
+  const redirectUri = context?.query?.redirectUri
+    ? (context?.query?.redirectUri + "").trim()
+    : null;
+
+  if (token) {
+    setToken(token);
+
+    if (redirectUri) {
+      return {
+        redirect: {
+          destination: redirectUri,
+          permanent: false,
+        },
+      };
+    }
+  }
+
+  return {
+    props: {
+      token,
+      redirectUri,
+    },
+  };
+};
