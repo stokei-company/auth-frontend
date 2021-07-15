@@ -1,11 +1,10 @@
-import React from "react";
 import {
   Button as ChakraButton,
   ButtonProps as ChakraButtonProps,
   Image,
 } from "@chakra-ui/react";
-
-import { FaFacebook, FaGoogle } from "react-icons/fa";
+import React from "react";
+import { FaFacebook } from "react-icons/fa";
 import { colors } from "~/utils/constants";
 
 export const Button: React.FC<ChakraButtonProps> = (props) => {
@@ -87,7 +86,7 @@ export const GoogleButton: React.FC<ChakraButtonProps> = (props) => {
     <ChakraButton
       backgroundColor="#e9effb"
       color="black.200"
-      leftIcon={<Image src="/google_logo.png" boxSize="15px" />}
+      leftIcon={<Image src="/google_logo.png" alt="google" boxSize="15px" />}
       height="40px"
       minHeight="40px"
       borderRadius="full"

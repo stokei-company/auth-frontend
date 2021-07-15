@@ -18,7 +18,7 @@ export default function Home({ app, redirectUri, ...props }) {
             width="100%"
             backgroundColor="gray.50"
             borderRadius="md"
-            padding={16}
+            padding={[8, 8, 16, 16]}
           >
             <FormLogin app={app} redirectUri={redirectUri} />
           </Box>

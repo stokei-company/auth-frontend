@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-frontend
+  template:
+    metadata:
+      labels:
+        app: auth-frontend
+    spec:
+      imagePullSecrets:
+      - name: registry-credentials
+      containers:
+        - name: auth-frontend
+          image: stokei/auth-frontend:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources: {}
+          imagePullPolicy: Always

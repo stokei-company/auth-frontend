@@ -29,7 +29,7 @@ export default function Callback({ ...props }: Props) {
       window.location.href = redirectUri + "";
     }
     router.replace("/redirect");
-  }, [token, redirectUri]);
+  }, [init, router, token, redirectUri]);
 
   return (
     <Struct redirectUri={redirectUri + ""}>
