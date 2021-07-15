@@ -22,19 +22,3 @@ spec:
               protocol: TCP
           resources: {}
           imagePullPolicy: Always
-          env:
-            - name: NEXT_PUBLIC_AUTH_SERVER_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: urls-configmap
-                  key: auth-gateway-url
-            - name: NEXT_PUBLIC_PAINEL_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: urls-configmap
-                  key: apps-painel-frontend-url
-            - name: NEXT_PUBLIC_PAINEL_ADMIN_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: urls-configmap
-                  key: apps-painel-admin-frontend-url
