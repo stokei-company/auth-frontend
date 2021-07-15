@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: auth-frontend
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+  DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+jobs:
+  build:
+    name: Build, push, and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@main
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ env.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Build container image
+        run: docker build -t ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}  \
+              --build-arg=NEXT_PUBLIC_AUTH_SERVER_URL=${{ secrets.NEXT_PUBLIC_AUTH_SERVER_URL }} \
+              --build-arg=NEXT_PUBLIC_PAINEL_URL=${{ secrets.NEXT_PUBLIC_PAINEL_URL }} \
+              --build-arg=NEXT_PUBLIC_PAINEL_ADMIN_URL=${{ secrets.NEXT_PUBLIC_PAINEL_ADMIN_URL }} .
+
+      - name: Docker Login
+        run: docker login -u ${{env.DOCKER_USERNAME}} -p ${{env.DOCKER_PASSWORD}}
+
+      - name: Push image to Docker Hub
+        run: docker push ${{ env.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}
+
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save ${{env.CLUSTER_NAME}}
+
+      - name: Deploy to Kubernetes
+        run: kubectl set image deployment/${{env.IMAGE_NAME}} ${{env.IMAGE_NAME}}=${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/${{env.IMAGE_NAME}}
