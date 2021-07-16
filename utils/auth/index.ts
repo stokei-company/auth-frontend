@@ -17,6 +17,7 @@ export const setToken = (value: string, ctx?: any) => nookies.set(ctx, TOKEN, va
     expires: addHours(Date.now(), 12),
     secure: isProduction,
     domain: cookieDomain,
+    sameSite: true,
 });
 
 export const authHeader = (): object => {
