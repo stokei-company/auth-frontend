@@ -13,6 +13,7 @@ export const removeToken = (ctx?: any) => nookies.destroy(ctx, TOKEN);
 export const setToken = (value: string, ctx?: any) => nookies.set(ctx, TOKEN, value, {
     expires: addHours(Date.now(), 12),
     secure: isProduction,
+    domain: 'stokei.com',
 });
 
 export const authHeader = (): object => {
