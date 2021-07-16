@@ -18,8 +18,8 @@ env:
   NEXT_PUBLIC_PAINEL_ADMIN_URL: ${{ secrets.APPS_PAINEL_ADMIN_FRONTEND_URL }}
 
 jobs:
-  build:
-    name: Build, push, and deploy
+  CI:
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
@@ -44,17 +44,32 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest, ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: |
+            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           build-args: |
             NEXT_PUBLIC_AUTH_SERVER_URL=${{ env.NEXT_PUBLIC_AUTH_SERVER_URL }}
             NEXT_PUBLIC_PAINEL_URL=${{ env.NEXT_PUBLIC_PAINEL_URL }}
             NEXT_PUBLIC_PAINEL_ADMIN_URL=${{ env.NEXT_PUBLIC_PAINEL_ADMIN_URL }}
 
+  CD:
+    name: CD
+    needs: [CI]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@main
+        
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ env.DIGITALOCEAN_ACCESS_TOKEN }}
+
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save ${{env.CLUSTER_NAME}}
 
       - name: Deploy to Kubernetes
-        run: kubectl apply -f ./k8s -R
+        run: kubectl apply -f ${{ github.workspace }}/k8s -R
         
       - name: Set image to Kubernetes
         run: kubectl set image deployment/${{env.KUBERNETES_DEPLOYMENT_NAME}} ${{env.IMAGE_NAME}}=${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
