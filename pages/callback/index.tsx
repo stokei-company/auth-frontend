@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { BoxResponse } from "~/components/pages/callback/box-response";
 import { Header } from "~/components/pages/callback/header";
 import Struct from "~/components/pages/struct";
+import { axiosClient } from "~/config/axios";
 import { setToken } from "~/utils/auth";
 import { colors } from "~/utils/constants";
 
@@ -18,8 +19,8 @@ export default function Callback({ token, redirectUri, ...props }: Props) {
   const success = token ? true : false;
 
   useEffect(() => {
-    if(token){
-      router.replace('/redirect');
+    if (token) {
+      router.replace("/redirect");
     }
   }, [token]);
 
@@ -78,7 +79,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     : null;
 
   if (token) {
-    setToken(token);
+    setToken(token, context);
+    
+    axiosClient.defaults.headers["Authorization"] = `Bearer ${token}`;
 
     if (redirectUri) {
       return {

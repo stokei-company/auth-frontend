@@ -1,14 +1,18 @@
-import Cookie from 'js-cookie';
 import { addHours } from 'date-fns';
+import nookies, { parseCookies } from 'nookies';
 import { isProduction } from '~/environments';
 
 const TOKEN = "stk-token";
 
-export const getToken = () => Cookie.get(TOKEN);
-export const removeToken = () => Cookie.remove(TOKEN);
-export const setToken = (value: string) => Cookie.set(TOKEN, value, {
-    expires: addHours(Date.now(), 12).getTime(),
-    secure: isProduction
+export const getToken = (ctx?: any) => {
+    const cookies = parseCookies(ctx);
+    return cookies[TOKEN];
+}
+export const removeToken = (ctx?: any) => nookies.destroy(ctx, TOKEN);
+
+export const setToken = (value: string, ctx?: any) => nookies.set(ctx, TOKEN, value, {
+    expires: addHours(Date.now(), 12),
+    secure: isProduction,
 });
 
 export const authHeader = (): object => {
