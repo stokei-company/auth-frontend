@@ -22,7 +22,7 @@ export default function Callback({ token, redirectUri, ...props }: Props) {
     if (token) {
       router.replace("/redirect");
     }
-  }, [token]);
+  }, [token, router]);
 
   return (
     <Struct redirectUri={redirectUri + ""}>
