@@ -1,10 +1,11 @@
-import { Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { Flex, Heading, Icon, Link, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import NextLink from "next/link";
 import { useState } from "react";
 import * as Yup from "yup";
 import { Button } from "~/components/button";
-import { Input } from "~/components/input";
+import { UserIcon } from "~/components/icons";
+import { Input, InputEmail, InputPassword } from "~/components/input";
 import { axiosClient } from "~/config/axios";
 import { AppModel } from "~/shared/@types/app";
 import { setToken } from "~/utils/auth";
@@ -131,6 +132,9 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             name="firstname"
             label="Nome"
             placeholder="Nome"
+            rightElement={
+              <Icon as={UserIcon} color="blackAlpha.700" size="18" />
+            }
             borderColor={formik.errors.firstname && "red.400"}
             errorMessage={formik.touched.firstname && formik.errors.firstname}
             {...formik.getFieldProps("firstname")}
@@ -141,12 +145,15 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             name="lastname"
             label="Sobrenome"
             placeholder="Sobrenome"
+            rightElement={
+              <Icon as={UserIcon} color="blackAlpha.700" size="18" />
+            }
             borderColor={formik.errors.lastname && "red.400"}
             errorMessage={formik.touched.lastname && formik.errors.lastname}
             {...formik.getFieldProps("lastname")}
           />
 
-          <Input
+          <InputEmail
             id="email"
             name="email"
             label="E-mail"
@@ -156,9 +163,8 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             {...formik.getFieldProps("email")}
           />
 
-          <Input
+          <InputPassword
             id="password"
-            type="password"
             name="password"
             label="Senha"
             placeholder="Senha"
