@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { Button } from "~/components/button";
-import { Input } from "~/components/input";
+import { Input, InputEmail, InputPassword } from "~/components/input";
 import { axiosClient } from "~/config/axios";
 
 interface Props {
@@ -61,7 +61,7 @@ export const FormChangePassword: React.FC<Props> = ({ code, ...props }) => {
             flexDirection: "column",
           }}
         >
-          <Input
+          <InputEmail
             id="email"
             name="email"
             label="E-mail"
@@ -71,7 +71,7 @@ export const FormChangePassword: React.FC<Props> = ({ code, ...props }) => {
             {...formik.getFieldProps("email")}
           />
 
-          <Input
+          <InputPassword
             id="password"
             name="password"
             label="Nova senha"

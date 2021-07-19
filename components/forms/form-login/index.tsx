@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import React from "react";
 import * as Yup from "yup";
 import { Button, FacebookButton, GoogleButton } from "~/components/button";
-import { Input } from "~/components/input";
+import { Input, InputEmail, InputPassword } from "~/components/input";
 import { axiosClient } from "~/config/axios";
 import { AppModel } from "~/shared/@types/app";
 import { setToken } from "~/utils/auth";
@@ -96,7 +96,7 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             flexDirection: "column",
           }}
         >
-          <Input
+          <InputEmail
             id="email"
             name="email"
             label="E-mail"
@@ -106,9 +106,8 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             {...formik.getFieldProps("email")}
           />
 
-          <Input
+          <InputPassword
             id="password"
-            type="password"
             name="password"
             label="Senha"
             placeholder="Senha"
