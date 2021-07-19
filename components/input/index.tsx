@@ -38,8 +38,9 @@ export const Input: React.FC<Props> = ({
             height="full"
             alignItems="center"
             justifyContent="center"
-            children={leftElement}
-          />
+          >
+            {leftElement}
+          </InputLeftElement>
         )}
         <ChakraInput
           height="50px"
@@ -57,8 +58,9 @@ export const Input: React.FC<Props> = ({
             height="full"
             alignItems="center"
             justifyContent="center"
-            children={rightElement}
-          />
+          >
+            {rightElement}
+          </InputRightElement>
         )}
       </InputGroup>
 
