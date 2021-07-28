@@ -7,6 +7,7 @@ import { Button } from "~/components/button";
 import { UserIcon } from "~/components/icons";
 import { Input, InputEmail, InputPassword } from "~/components/input";
 import { axiosClient } from "~/config/axios";
+import { currentDevice } from "~/services/device";
 import { AppModel } from "~/shared/@types/app";
 import { setToken } from "~/utils/auth";
 import { colors } from "~/utils/constants";
@@ -35,6 +36,7 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       setError((data) => "");
       try {
+        const device = currentDevice();
         const response = await axiosClient.post("/default/signup", {
           account: {
             firstname: values.firstname,
@@ -42,6 +44,7 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             email: values.email,
             password: values.password,
           },
+          device,
           redirectUri,
         });
 

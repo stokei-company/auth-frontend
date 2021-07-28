@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { Button, FacebookButton, GoogleButton } from "~/components/button";
 import { Input, InputEmail, InputPassword } from "~/components/input";
 import { axiosClient } from "~/config/axios";
+import { currentDevice } from "~/services/device";
 import { AppModel } from "~/shared/@types/app";
 import { setToken } from "~/utils/auth";
 import { colors, facebookAuthURI, googleAuthURI } from "~/utils/constants";
@@ -30,11 +31,13 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
+        const device = currentDevice();
         const response = await axiosClient.post("/default/login", {
           account: {
             email: values.email,
             password: values.password,
           },
+          device,
           redirectUri,
         });
 
