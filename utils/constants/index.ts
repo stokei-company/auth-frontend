@@ -1,3 +1,4 @@
+import { currentDevice } from "~/services/device";
 import { AUTH_SERVER_URL } from "../../environments";
 import { mountUri } from "../uri/mount-uri";
 
@@ -11,16 +12,23 @@ interface ParamsSocialMediaURI {
     readonly appId?: string;
 }
 
-const authURI = async (baseURL: string, data: ParamsSocialMediaURI) => await mountUri(baseURL, [
-    data.redirectUri && {
-        key: "redirectUri",
-        value: data.redirectUri,
-    },
-    data.appId && {
-        key: "appId",
-        value: data.appId,
-    },
-]);
+const authURI = async (baseURL: string, data: ParamsSocialMediaURI) => {
+    const device = currentDevice();
+    return await mountUri(baseURL, [
+        data.redirectUri && {
+            key: "redirectUri",
+            value: data.redirectUri,
+        },
+        data.appId && {
+            key: "appId",
+            value: data.appId,
+        },
+        device && {
+            key: "device",
+            value: JSON.stringify(device),
+        },
+    ]);
+}
 
 export const googleAuthURI = (data: ParamsSocialMediaURI) => authURI(AUTH_SERVER_URL + "/google", data);
 
