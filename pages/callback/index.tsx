@@ -1,12 +1,13 @@
-import { Flex, Link, Text } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { BoxResponse } from "~/components/pages/callback/box-response";
-import { Header } from "~/components/pages/callback/header";
-import Struct from "~/components/pages/struct";
-import { axiosClient } from "~/config/axios";
-import { DASHBOARD_URL } from "~/environments";
-import { setToken } from "~/utils/auth";
-import { colors } from "~/utils/constants";
+import { Flex, Link, Text } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
+import { useEffect } from 'react';
+import { BoxResponse } from '~/components/pages/callback/box-response';
+import { Header } from '~/components/pages/callback/header';
+import Struct from '~/components/pages/struct';
+import { axiosClient } from '~/config/axios';
+import { DASHBOARD_URL } from '~/environments';
+import { setToken } from '~/utils/auth';
+import { colors } from '~/utils/constants';
 
 interface Props {
   readonly token?: string;
@@ -16,8 +17,12 @@ interface Props {
 export default function Callback({ token, redirectUri, ...props }: Props) {
   const success = token ? true : false;
 
+  useEffect(() => {
+    window.location.href = redirectUri;
+  }, []);
+
   return (
-    <Struct redirectUri={redirectUri + ""}>
+    <Struct redirectUri={redirectUri + ''}>
       <Flex
         minHeight="70vh"
         justifyContent="center"
@@ -26,20 +31,20 @@ export default function Callback({ token, redirectUri, ...props }: Props) {
         paddingY={30}
       >
         <Header
-          title={success ? "Sucesso" : "Ooops!"}
-          color={success ? "green.400" : "red.500"}
+          title={success ? 'Sucesso' : 'Ooops!'}
+          color={success ? 'green.400' : 'red.500'}
         />
 
         <BoxResponse success={success} />
 
         {redirectUri && success && (
           <Text mt={6}>
-            Aguarde ser redirecionado ou{" "}
+            Aguarde ser redirecionado ou{' '}
             <Link
               fontWeight="bold"
               color={colors.primary.light}
               _hover={{ color: colors.primary.light }}
-              href={redirectUri + ""}
+              href={redirectUri + ''}
             >
               clique aqui.
             </Link>
@@ -50,9 +55,9 @@ export default function Callback({ token, redirectUri, ...props }: Props) {
           <Link
             mt={6}
             fontWeight="bold"
-            color={"red.500"}
-            _hover={{ color: "red.500" }}
-            href={redirectUri + ""}
+            color={'red.500'}
+            _hover={{ color: 'red.500' }}
+            href={redirectUri + ''}
           >
             Voltar
           </Link>
@@ -64,23 +69,23 @@ export default function Callback({ token, redirectUri, ...props }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context?.query?.token
-    ? (context?.query?.token + "").trim()
+    ? (context?.query?.token + '').trim()
     : null;
   const redirectUri = context?.query?.redirectUri
-    ? (context?.query?.redirectUri + "").trim()
+    ? (context?.query?.redirectUri + '').trim()
     : DASHBOARD_URL;
 
   if (token) {
     setToken(token, context);
 
-    axiosClient.defaults.headers["Authorization"] = `Bearer ${token}`;
+    axiosClient.defaults.headers['Authorization'] = `Bearer ${token}`;
 
     if (redirectUri) {
       return {
         redirect: {
           destination: redirectUri,
-          permanent: false,
-        },
+          permanent: false
+        }
       };
     }
   }
@@ -88,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       token,
-      redirectUri,
-    },
+      redirectUri
+    }
   };
 };
