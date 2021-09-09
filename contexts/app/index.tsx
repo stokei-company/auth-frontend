@@ -20,7 +20,10 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
   const router = useRouter();
 
   const appId = useMemo(() => {
-    return (router?.query?.appId + '').trim();
+    if (router?.query?.appId && router?.query?.appId !== 'undefined') {
+      return (router?.query?.appId + '').trim();
+    }
+    return '';
   }, [router]);
 
   const { app, loading } = useApp({ appId });

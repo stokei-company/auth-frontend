@@ -5,6 +5,7 @@ import { mountUri } from '../uri/mount-uri';
 export const SITE_NAME = 'Stokei';
 
 export const logoUrl = 'https://assets.stokei.com/logos/logo.png';
+export const landingPageUrl = 'https://stokei.com';
 export const faviconUrl = 'https://assets.stokei.com/logos/favicon.png';
 
 interface ParamsSocialMediaURI {

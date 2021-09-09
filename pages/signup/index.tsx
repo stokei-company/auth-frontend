@@ -1,26 +1,46 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Heading, Image, Link, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import { useContext } from 'react';
 import { FormSignUp } from '~/components/forms/form-signup';
-import { RootLayout } from '~/components/layouts/root';
+import { AuthLayout } from '~/components/layouts/auth';
+import { RootContext } from '~/contexts/root';
+import { colors, logoUrl } from '~/utils/constants';
 
-export default function SignUp({ ...props }) {
+export default function Home({ ...props }) {
+  const { homeUri } = useContext(RootContext);
+
   return (
-    <RootLayout>
-      <Box
-        width="full"
-        height="full"
-        maxWidth={['full', 'full', '500px', '500px']}
-        paddingY={8}
-      >
-        <Box
-          width="100%"
-          backgroundColor="gray.50"
-          padding={8}
-          borderRadius="sm"
-          overflowY="auto"
-        >
+    <AuthLayout
+      left={
+        <Box width="full" paddingY={12}>
           <FormSignUp />
         </Box>
-      </Box>
-    </RootLayout>
+      }
+      right={
+        <Box width="full">
+          <Box width="full" paddingX={12}>
+            <Box width="full" marginBottom={12}>
+              <NextLink href={homeUri}>
+                <Link>
+                  <Image
+                    height={20}
+                    src={logoUrl}
+                    fallbackSrc="/logo.png"
+                    cursor="pointer"
+                    alt="Logo"
+                  />
+                </Link>
+              </NextLink>
+            </Box>
+            <Box width="full">
+              <Heading color={colors.primary.main} marginBottom={2}>
+                Seja bem vindo!
+              </Heading>
+              <Text>Aprenda, empreenda e se surpreenda.</Text>
+            </Box>
+          </Box>
+        </Box>
+      }
+    />
   );
 }

@@ -1,4 +1,4 @@
-import { Flex, Heading, Link, Text } from '@chakra-ui/react';
+import { Flex, Heading, Link, Text, useDisclosure } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import NextLink from 'next/link';
 import React, { useContext } from 'react';
@@ -17,8 +17,9 @@ import { SocialAuthBox } from '../social-auth-box';
 interface FormLoginProps {}
 
 export const FormLogin: React.FC<FormLoginProps> = ({ ...props }) => {
+  const { isOpen, onOpen } = useDisclosure();
   const { app } = useContext(AppContext);
-  const { redirectUri } = useContext(RootContext);
+  const { redirectUri, forgotPasswordUri, signUpUri } = useContext(RootContext);
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -61,17 +62,7 @@ export const FormLogin: React.FC<FormLoginProps> = ({ ...props }) => {
   });
 
   return (
-    <Flex gridArea="form" flex={1} height="auto" flexDir="column">
-      {!app && (
-        <Heading
-          size="lg"
-          textAlign="center"
-          lineHeight="shorter"
-          marginBottom="6"
-        >
-          Login
-        </Heading>
-      )}
+    <Flex flex={1} height="auto" flexDir="column">
       {app && (
         <Flex
           width="full"
@@ -83,85 +74,83 @@ export const FormLogin: React.FC<FormLoginProps> = ({ ...props }) => {
         </Flex>
       )}
 
-      <SocialAuthBox redirectUri={redirectUri} appId={app?.id} />
+      <Heading
+        size="lg"
+        textAlign="center"
+        lineHeight="shorter"
+        marginBottom="6"
+      >
+        Entre
+      </Heading>
 
-      <Flex alignItems="center" justifyContent="center" marginBottom={8}>
-        <Text color="gray.600" fontSize="sm" textTransform="uppercase">
-          Entre com o email
-        </Text>
-      </Flex>
+      <SocialAuthBox isOpen={isOpen} onOpenEmail={onOpen} />
 
-      <Flex height="auto" flexDir="column" justifyContent="stretch">
-        <form
-          onSubmit={formik.handleSubmit}
-          style={{
-            display: 'flex',
-            flexDirection: 'column'
-          }}
-        >
-          <InputEmail
-            id="email"
-            name="email"
-            label="E-mail"
-            placeholder="E-mail"
-            borderColor={formik.errors.email && 'red.400'}
-            errorMessage={formik.touched.email && formik.errors.email}
-            {...formik.getFieldProps('email')}
-          />
-
-          <InputPassword
-            id="password"
-            name="password"
-            label="Senha"
-            placeholder="Senha"
-            borderColor={formik.errors.password && 'red.400'}
-            errorMessage={formik.touched.password && formik.errors.password}
-            {...formik.getFieldProps('password')}
-          />
-
-          <NextLink href="/password/forgot">
-            <Link
-              alignSelf="flex-start"
-              marginTop={2}
-              fontSize="sm"
-              color={colors.primary.main}
-              fontWeight="bold"
-              _hover={{ color: colors.primary.light }}
-            >
-              Esqueci minha senha
-            </Link>
-          </NextLink>
-
-          <Button
-            type="submit"
-            isLoading={formik.isSubmitting}
-            loadingText="Entrando"
-            spinnerPlacement="end"
-            disabled={formik.isSubmitting || !formik.isValid}
-            marginTop={6}
+      {isOpen && (
+        <Flex flexDir="column" justifyContent="stretch" marginTop={6}>
+          <form
+            onSubmit={formik.handleSubmit}
+            style={{
+              display: 'flex',
+              flexDirection: 'column'
+            }}
           >
-            Entrar
-          </Button>
+            <InputEmail
+              name="email"
+              label="E-mail"
+              placeholder="E-mail"
+              borderColor={formik.errors.email && 'red.400'}
+              errorMessage={formik.touched.email && formik.errors.email}
+              {...formik.getFieldProps('email')}
+            />
 
-          <Text textAlign="center" fontSize="sm" marginTop={6}>
-            Não tem uma conta?{' '}
-            <NextLink
-              href={{
-                pathname: '/signup',
-                query: { redirectUri, appId: app && app.id }
-              }}
-            >
+            <InputPassword
+              name="password"
+              label="Senha"
+              placeholder="Senha"
+              borderColor={formik.errors.password && 'red.400'}
+              errorMessage={formik.touched.password && formik.errors.password}
+              {...formik.getFieldProps('password')}
+            />
+
+            <NextLink href={forgotPasswordUri}>
               <Link
+                alignSelf="flex-start"
+                marginTop={2}
+                fontSize="sm"
                 color={colors.primary.main}
                 fontWeight="bold"
                 _hover={{ color: colors.primary.light }}
               >
-                Registre-se
+                Esqueci minha senha
               </Link>
             </NextLink>
-          </Text>
-        </form>
-      </Flex>
+
+            <Button
+              type="submit"
+              isLoading={formik.isSubmitting}
+              loadingText="Entrando"
+              spinnerPlacement="end"
+              disabled={formik.isSubmitting || !formik.isValid}
+              marginTop={6}
+            >
+              Entrar
+            </Button>
+          </form>
+        </Flex>
+      )}
+
+      <Text textAlign="center" fontSize="sm" marginTop={6}>
+        Não tem uma conta?{' '}
+        <NextLink href={signUpUri}>
+          <Link
+            color={colors.primary.main}
+            fontWeight="bold"
+            _hover={{ color: colors.primary.light }}
+          >
+            Registre-se
+          </Link>
+        </NextLink>
+      </Text>
     </Flex>
   );
 };

@@ -1,13 +1,13 @@
 html,
-body {
-  width: 100%;
-  color: #0e2524 !important;
-  box-sizing: border-box;
-}
-body > div {
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
   width: 100%;
   height: auto;
   min-height: 100% !important;
+  color: #0e2524 !important;
+  box-sizing: border-box;
 }
 
 a:hover,

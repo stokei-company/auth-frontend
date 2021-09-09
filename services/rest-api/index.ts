@@ -12,7 +12,7 @@ export interface ClientRestAPIInstance {
 }
 
 export const clientRestApi = (
-  config?: BaseServiceConfig
+  config: BaseServiceConfig = {}
 ): ClientRestAPIInstance => {
   return {
     me: new MeServiceRest(config),

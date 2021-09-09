@@ -1,4 +1,11 @@
-import { Flex, Heading, Icon, Link, Text } from '@chakra-ui/react';
+import {
+  Flex,
+  Heading,
+  Icon,
+  Link,
+  Text,
+  useDisclosure
+} from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import NextLink from 'next/link';
 import { useContext, useState } from 'react';
@@ -18,10 +25,11 @@ import { SocialAuthBox } from '../social-auth-box';
 interface FormSignUpProps {}
 
 export const FormSignUp: React.FC<FormSignUpProps> = ({ ...props }) => {
+  const { isOpen, onOpen } = useDisclosure();
   const [error, setError] = useState('');
 
   const { app } = useContext(AppContext);
-  const { redirectUri } = useContext(RootContext);
+  const { redirectUri, loginUri } = useContext(RootContext);
 
   const formik = useFormik({
     initialValues: { firstname: '', lastname: '', email: '', password: '' },
@@ -84,6 +92,8 @@ export const FormSignUp: React.FC<FormSignUpProps> = ({ ...props }) => {
           setError((data) => 'Ooops, desculpe, não consegui cadastrar você!');
         }
       } catch (error) {
+        console.log(error);
+
         setError((data) => 'Ooops, desculpe, não consegui cadastrar você!');
       }
 
@@ -93,15 +103,6 @@ export const FormSignUp: React.FC<FormSignUpProps> = ({ ...props }) => {
 
   return (
     <Flex gridArea="form" flex={1} height="auto" flexDir="column">
-      <Heading
-        size="lg"
-        textAlign="center"
-        lineHeight="shorter"
-        marginBottom="6"
-      >
-        Cadastre-se
-      </Heading>
-
       {app && (
         <Flex
           width="full"
@@ -113,110 +114,111 @@ export const FormSignUp: React.FC<FormSignUpProps> = ({ ...props }) => {
         </Flex>
       )}
 
-      <SocialAuthBox redirectUri={redirectUri} appId={app?.id} />
+      <Heading
+        size="lg"
+        textAlign="center"
+        lineHeight="shorter"
+        marginBottom="6"
+      >
+        Cadastre-se
+      </Heading>
 
-      <Flex alignItems="center" justifyContent="center" marginBottom={8}>
-        <Text color="gray.600" fontSize="sm" textTransform="uppercase">
-          Cadastre-se com o email
-        </Text>
-      </Flex>
+      <SocialAuthBox isOpen={isOpen} onOpenEmail={onOpen} />
 
-      <Flex height="auto" flexDir="column">
-        <form
-          onSubmit={formik.handleSubmit}
-          style={{
-            display: 'flex',
-            flexDirection: 'column'
-          }}
+      {isOpen && (
+        <Flex
+          height="auto"
+          flexDir="column"
+          justifyContent="stretch"
+          marginTop={6}
         >
-          <Input
-            id="firstname"
-            name="firstname"
-            label="Nome"
-            placeholder="Nome"
-            rightElement={
-              <Icon as={UserIcon} color="blackAlpha.700" size="18" />
-            }
-            borderColor={formik.errors.firstname && 'red.400'}
-            errorMessage={formik.touched.firstname && formik.errors.firstname}
-            {...formik.getFieldProps('firstname')}
-          />
-
-          <Input
-            id="lastname"
-            name="lastname"
-            label="Sobrenome"
-            placeholder="Sobrenome"
-            rightElement={
-              <Icon as={UserIcon} color="blackAlpha.700" size="18" />
-            }
-            borderColor={formik.errors.lastname && 'red.400'}
-            errorMessage={formik.touched.lastname && formik.errors.lastname}
-            {...formik.getFieldProps('lastname')}
-          />
-
-          <InputEmail
-            id="email"
-            name="email"
-            label="E-mail"
-            placeholder="E-mail"
-            borderColor={formik.errors.email && 'red.400'}
-            errorMessage={formik.touched.email && formik.errors.email}
-            {...formik.getFieldProps('email')}
-          />
-
-          <InputPassword
-            id="password"
-            name="password"
-            label="Senha"
-            placeholder="Senha"
-            borderColor={formik.errors.password && 'red.400'}
-            errorMessage={formik.touched.password && formik.errors.password}
-            {...formik.getFieldProps('password')}
-          />
-
-          <Flex>
-            <Text color="gray.500" fontSize="xs">
-              Ao se cadastrar, você concorda com os{' '}
-              <NextLink href="/terms">
-                <Link color={colors.primary.main}>termos de uso</Link>
-              </NextLink>
-              .
-            </Text>
-          </Flex>
-
-          {error && <Text color="red.500">{error}</Text>}
-
-          <Button
-            type="submit"
-            isLoading={formik.isSubmitting}
-            loadingText="Cadastrando"
-            spinnerPlacement="end"
-            disabled={formik.isSubmitting || !formik.isValid}
-            marginTop={6}
+          <form
+            onSubmit={formik.handleSubmit}
+            style={{
+              display: 'flex',
+              flexDirection: 'column'
+            }}
           >
-            Cadastrar
-          </Button>
+            <Input
+              name="firstname"
+              label="Nome"
+              placeholder="Nome"
+              rightElement={
+                <Icon as={UserIcon} color="blackAlpha.700" size="18" />
+              }
+              borderColor={formik.errors.firstname && 'red.400'}
+              errorMessage={formik.touched.firstname && formik.errors.firstname}
+              {...formik.getFieldProps('firstname')}
+            />
 
-          <Text textAlign="center" fontSize="sm" marginTop={6}>
-            Já possui uma conta?{' '}
-            <NextLink
-              href={{
-                pathname: '/',
-                query: { redirectUri, appId: app && app.id }
-              }}
+            <Input
+              name="lastname"
+              label="Sobrenome"
+              placeholder="Sobrenome"
+              rightElement={
+                <Icon as={UserIcon} color="blackAlpha.700" size="18" />
+              }
+              borderColor={formik.errors.lastname && 'red.400'}
+              errorMessage={formik.touched.lastname && formik.errors.lastname}
+              {...formik.getFieldProps('lastname')}
+            />
+
+            <InputEmail
+              name="email"
+              label="E-mail"
+              placeholder="E-mail"
+              borderColor={formik.errors.email && 'red.400'}
+              errorMessage={formik.touched.email && formik.errors.email}
+              {...formik.getFieldProps('email')}
+            />
+
+            <InputPassword
+              name="password"
+              label="Senha"
+              placeholder="Senha"
+              borderColor={formik.errors.password && 'red.400'}
+              errorMessage={formik.touched.password && formik.errors.password}
+              {...formik.getFieldProps('password')}
+            />
+
+            <Flex>
+              <Text color="gray.500" fontSize="xs">
+                Ao se cadastrar, você concorda com os{' '}
+                <NextLink href="/terms">
+                  <Link color={colors.primary.main}>termos de uso</Link>
+                </NextLink>
+                .
+              </Text>
+            </Flex>
+
+            {error && <Text color="red.500">{error}</Text>}
+
+            <Button
+              type="submit"
+              isLoading={formik.isSubmitting}
+              loadingText="Cadastrando"
+              spinnerPlacement="end"
+              disabled={formik.isSubmitting || !formik.isValid}
+              marginTop={6}
             >
-              <Link
-                color={colors.primary.main}
-                fontWeight="bold"
-                _hover={{ color: colors.primary.light }}
-              >
-                Faça login
-              </Link>
-            </NextLink>
-          </Text>
-        </form>
-      </Flex>
+              Cadastrar
+            </Button>
+          </form>
+        </Flex>
+      )}
+
+      <Text textAlign="center" fontSize="sm" marginTop={6}>
+        Já possui uma conta?{' '}
+        <NextLink href={loginUri}>
+          <Link
+            color={colors.primary.main}
+            fontWeight="bold"
+            _hover={{ color: colors.primary.light }}
+          >
+            Faça login
+          </Link>
+        </NextLink>
+      </Text>
     </Flex>
   );
 };

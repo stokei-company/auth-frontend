@@ -1,48 +1,16 @@
 import { Box, Flex, Image, Spacer, Stack } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import { Button, ButtonOutlined } from '~/components/ui/button';
-import { AppContext } from '~/contexts/app';
 import { RootContext } from '~/contexts/root';
 import { logoUrl } from '~/utils/constants';
 
 interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = ({ ...props }) => {
-  const { appId } = useContext(AppContext);
-  const { redirectUri } = useContext(RootContext);
+  const { loginUri, signUpUri } = useContext(RootContext);
   const router = useRouter();
-
-  const loginUri = useMemo(() => {
-    let url = '/';
-    if (!redirectUri && !appId) {
-      return url;
-    }
-    const items = [];
-    if (appId) {
-      items.push(`appId=${appId}`);
-    }
-    if (redirectUri) {
-      items.push(`redirectUri=${redirectUri}`);
-    }
-    return url + '?' + items.join('&');
-  }, [redirectUri, appId]);
-
-  const signupUri = useMemo(() => {
-    let url = '/signup';
-    if (!redirectUri && !appId) {
-      return url;
-    }
-    const items = [];
-    if (appId) {
-      items.push(`appId=${appId}`);
-    }
-    if (redirectUri) {
-      items.push(`redirectUri=${redirectUri}`);
-    }
-    return url + '?' + items.join('&');
-  }, [redirectUri, appId]);
 
   return (
     <Flex
@@ -88,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ ...props }) => {
         <ButtonOutlined onClick={() => router.replace(loginUri)}>
           Entrar
         </ButtonOutlined>
-        <Button onClick={() => router.replace(signupUri)}>Cadastre-se</Button>
+        <Button onClick={() => router.replace(signUpUri)}>Cadastre-se</Button>
       </Stack>
     </Flex>
   );

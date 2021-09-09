@@ -1,6 +1,4 @@
 import { BaseService, BaseServiceConfig } from '../base-service';
-import { FindAllPayloadDTO } from './interfaces/find-all-payload.dto';
-import { FindAllDTO } from './interfaces/find-all.dto';
 
 export interface IAuthPayload {
   readonly accessToken: string;
