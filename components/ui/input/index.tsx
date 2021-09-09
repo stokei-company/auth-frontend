@@ -7,10 +7,14 @@ import {
   InputGroup,
   InputLeftElement,
   InputProps as ChakraInputProps,
-  InputRightElement,
-} from "@chakra-ui/react";
-import React, { ReactNode, useState } from "react";
-import { EmailIcon, PasswordHideIcon, PasswordShowIcon } from "../icons";
+  InputRightElement
+} from '@chakra-ui/react';
+import React, { ReactNode, useState } from 'react';
+import {
+  EmailIcon,
+  PasswordHideIcon,
+  PasswordShowIcon
+} from '~/components/icons';
 
 interface Props extends ChakraInputProps {
   readonly label?: string;
@@ -47,7 +51,7 @@ export const Input: React.FC<Props> = ({
           minHeight="50px"
           backgroundColor="white"
           _hover={{
-            borderColor: "green.600",
+            borderColor: 'green.600'
           }}
           focusBorderColor="green.600"
           borderRadius="sm"
@@ -80,7 +84,7 @@ export const InputPassword: React.FC<Props> = (props) => {
   return (
     <Input
       {...props}
-      type={show ? "text" : "password"}
+      type={show ? 'text' : 'password'}
       rightElement={
         show ? (
           <Icon
@@ -108,7 +112,7 @@ export const InputEmail: React.FC<Props> = (props) => {
   return (
     <Input
       {...props}
-      type={"email"}
+      type={'email'}
       rightElement={<Icon as={EmailIcon} color="blackAlpha.700" size="18" />}
     />
   );

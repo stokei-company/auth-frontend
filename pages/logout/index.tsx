@@ -1,9 +1,9 @@
-import { Flex, Heading } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-import { ButtonOutlined } from "~/components/button";
-import Struct from "~/components/pages/struct";
-import { removeToken } from "~/utils/auth";
+import { Flex, Heading } from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { ButtonOutlined } from '~/components/ui/button';
+import { RootLayout } from '~/components/layouts/root';
+import { removeToken } from '~/utils/auth';
 
 interface Props {}
 
@@ -11,7 +11,7 @@ export default function Logout({ ...props }: Props) {
   const router = useRouter();
 
   return (
-    <Struct>
+    <RootLayout>
       <Flex
         minHeight="70vh"
         justifyContent="center"
@@ -25,17 +25,17 @@ export default function Logout({ ...props }: Props) {
           </Heading>
         </Flex>
 
-        <ButtonOutlined mt={6} onClick={() => router.replace("/")}>
+        <ButtonOutlined mt={6} onClick={() => router.replace('/')}>
           Fazer login
         </ButtonOutlined>
       </Flex>
-    </Struct>
+    </RootLayout>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   removeToken(context);
   return {
-    props: {},
+    props: {}
   };
 };

@@ -1,30 +1,32 @@
-import { Stack } from "@chakra-ui/react";
-import { FacebookButton, GoogleButton } from "~/components/button";
-import { facebookAuthURI, googleAuthURI } from "~/utils/constants";
+import { Stack } from '@chakra-ui/react';
+import { useContext } from 'react';
+import {
+  FacebookButton,
+  GoogleButton,
+  EmailButton
+} from '~/components/ui/button';
+import { RootContext } from '~/contexts/root';
+import { facebookAuthURI, googleAuthURI } from '~/utils/constants';
 
-interface Props {
-  readonly appId?: string;
-  readonly redirectUri?: string;
+interface SocialAuthBoxProps {
+  readonly isOpen: boolean;
+  readonly onOpenEmail: () => void;
 }
 
-export const SocialAuthBox: React.FC<Props> = ({
-  redirectUri,
-  appId,
+export const SocialAuthBox: React.FC<SocialAuthBoxProps> = ({
+  onOpenEmail,
+  isOpen = false,
   ...props
 }) => {
+  const { redirectUri, appId } = useContext(RootContext);
   return (
-    <Stack
-      direction={["column", "column", "row", "row"]}
-      align={["stretch", "stretch", "center", "center"]}
-      spacing={3}
-      marginBottom={[6, 6, 10, 10]}
-    >
+    <Stack direction="column" align="stretch" spacing={3}>
       <GoogleButton
         flex="1"
         onClick={async () => {
           const href = await googleAuthURI({
             redirectUri,
-            appId,
+            appId
           });
           window.location.href = href;
         }}
@@ -36,13 +38,18 @@ export const SocialAuthBox: React.FC<Props> = ({
         onClick={async () => {
           const href = await facebookAuthURI({
             redirectUri,
-            appId,
+            appId
           });
           window.location.href = href;
         }}
       >
         Facebook
       </FacebookButton>
+      {!isOpen && (
+        <EmailButton flex="1" onClick={onOpenEmail}>
+          Email
+        </EmailButton>
+      )}
     </Stack>
   );
 };

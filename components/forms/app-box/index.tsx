@@ -1,5 +1,5 @@
-import { Flex, Image, Text } from "@chakra-ui/react";
-import { AppModel } from "~/shared/@types/app";
+import { Flex, Image, Text } from '@chakra-ui/react';
+import { AppModel } from '~/services/@types/app';
 
 interface Props {
   readonly app: AppModel;

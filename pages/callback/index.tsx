@@ -1,10 +1,9 @@
 import { Flex, Link, Text } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
+import { RootLayout } from '~/components/layouts/root';
 import { BoxResponse } from '~/components/pages/callback/box-response';
 import { Header } from '~/components/pages/callback/header';
-import Struct from '~/components/pages/struct';
-import { axiosClient } from '~/config/axios';
 import { DASHBOARD_URL } from '~/environments';
 import { setToken } from '~/utils/auth';
 import { colors } from '~/utils/constants';
@@ -18,11 +17,13 @@ export default function Callback({ token, redirectUri, ...props }: Props) {
   const success = token ? true : false;
 
   useEffect(() => {
+    setToken(token);
+
     window.location.href = redirectUri;
-  }, []);
+  }, [token, redirectUri]);
 
   return (
-    <Struct redirectUri={redirectUri + ''}>
+    <RootLayout>
       <Flex
         minHeight="70vh"
         justifyContent="center"
@@ -63,7 +64,7 @@ export default function Callback({ token, redirectUri, ...props }: Props) {
           </Link>
         )}
       </Flex>
-    </Struct>
+    </RootLayout>
   );
 }
 
@@ -78,16 +79,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (token) {
     setToken(token, context);
 
-    axiosClient.defaults.headers['Authorization'] = `Bearer ${token}`;
-
-    if (redirectUri) {
-      return {
-        redirect: {
-          destination: redirectUri,
-          permanent: false
-        }
-      };
-    }
+    //axios.defaults.headers['Authorization'] = `Bearer ${token}`;
   }
 
   return {
