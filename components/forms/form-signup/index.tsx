@@ -1,73 +1,72 @@
-import { Flex, Heading, Icon, Link, Text } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import NextLink from "next/link";
-import { useState } from "react";
-import * as Yup from "yup";
-import { Button } from "~/components/button";
-import { UserIcon } from "~/components/icons";
-import { Input, InputEmail, InputPassword } from "~/components/input";
-import { axiosClient } from "~/config/axios";
-import { currentDevice } from "~/services/device";
-import { AppModel } from "~/shared/@types/app";
-import { setToken } from "~/utils/auth";
-import { colors } from "~/utils/constants";
-import { AppBox } from "../app-box";
-import { SocialAuthBox } from "../social-auth-box";
+import { Flex, Heading, Icon, Link, Text } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import NextLink from 'next/link';
+import { useContext, useState } from 'react';
+import * as Yup from 'yup';
+import { UserIcon } from '~/components/icons';
+import { Button } from '~/components/ui/button';
+import { Input, InputEmail, InputPassword } from '~/components/ui/input';
+import { AppContext } from '~/contexts/app';
+import { RootContext } from '~/contexts/root';
+import { currentDevice } from '~/services/device';
+import { clientRestApi } from '~/services/rest-api';
+import { setToken } from '~/utils/auth';
+import { colors } from '~/utils/constants';
+import { AppBox } from '../app-box';
+import { SocialAuthBox } from '../social-auth-box';
 
-interface Props {
-  readonly app: AppModel;
-  readonly redirectUri: string;
-}
+interface FormSignUpProps {}
 
-export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
-  const [error, setError] = useState("");
+export const FormSignUp: React.FC<FormSignUpProps> = ({ ...props }) => {
+  const [error, setError] = useState('');
+
+  const { app } = useContext(AppContext);
+  const { redirectUri } = useContext(RootContext);
 
   const formik = useFormik({
-    initialValues: { firstname: "", lastname: "", email: "", password: "" },
+    initialValues: { firstname: '', lastname: '', email: '', password: '' },
     validationSchema: Yup.object({
-      firstname: Yup.string().required("Obrigatório"),
+      firstname: Yup.string().required('Obrigatório'),
       password: Yup.string()
-        .min(6, "A senha deve conter no mínimo 6 caracteres!")
-        .required("Obrigatório"),
+        .min(6, 'A senha deve conter no mínimo 6 caracteres!')
+        .required('Obrigatório'),
       email: Yup.string()
-        .email("Endereço de email inválido!")
-        .required("Obrigatório"),
+        .email('Endereço de email inválido!')
+        .required('Obrigatório')
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
-      setError((data) => "");
+      setError((data) => '');
       try {
         const device = currentDevice();
-        const response = await axiosClient.post("/default/signup", {
+        const response = await clientRestApi().users.signup({
           account: {
             firstname: values.firstname,
             lastname: values.lastname,
             email: values.email,
-            password: values.password,
+            password: values.password
           },
           device,
-          redirectUri,
+          redirectUri
         });
 
-        const data = response.data;
-
-        const errors: string[] = data.errors;
+        const errors: string[] = response.errors;
         if (errors && errors.length) {
           const error = errors.reduce((prev, curr) => {
-            const currError = (curr + "").toLowerCase();
+            const currError = (curr + '').toLowerCase();
             if (currError.match(/already exists/g)) {
-              return { ...prev, email: "Email já existe!" };
+              return { ...prev, email: 'Email já existe!' };
             }
             if (currError.match(/firstname/g)) {
-              return { ...prev, firstname: "Nome não informado!" };
+              return { ...prev, firstname: 'Nome não informado!' };
             }
             if (currError.match(/lastname/g)) {
-              return { ...prev, lastname: "Sobrenome não informado!" };
+              return { ...prev, lastname: 'Sobrenome não informado!' };
             }
             if (currError.match(/email/g)) {
-              return { ...prev, email: "Email não informado!" };
+              return { ...prev, email: 'Email não informado!' };
             }
             if (currError.match(/password/g)) {
-              return { ...prev, password: "Passoword não informado!" };
+              return { ...prev, password: 'Passoword não informado!' };
             }
             return { ...prev };
           }, {});
@@ -77,19 +76,19 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
           return;
         }
 
-        if (data && data.accessToken) {
-          setToken(data.accessToken);
+        if (response && response.accessToken) {
+          setToken(response.accessToken);
 
-          window.location.href = data.redirectUri;
+          window.location.href = response.redirectUri;
         } else {
-          setError((data) => "Ooops, desculpe, não consegui cadastrar você!");
+          setError((data) => 'Ooops, desculpe, não consegui cadastrar você!');
         }
       } catch (error) {
-        setError((data) => "Ooops, desculpe, não consegui cadastrar você!");
+        setError((data) => 'Ooops, desculpe, não consegui cadastrar você!');
       }
 
       setSubmitting(false);
-    },
+    }
   });
 
   return (
@@ -126,8 +125,8 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         <form
           onSubmit={formik.handleSubmit}
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <Input
@@ -138,9 +137,9 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             rightElement={
               <Icon as={UserIcon} color="blackAlpha.700" size="18" />
             }
-            borderColor={formik.errors.firstname && "red.400"}
+            borderColor={formik.errors.firstname && 'red.400'}
             errorMessage={formik.touched.firstname && formik.errors.firstname}
-            {...formik.getFieldProps("firstname")}
+            {...formik.getFieldProps('firstname')}
           />
 
           <Input
@@ -151,9 +150,9 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             rightElement={
               <Icon as={UserIcon} color="blackAlpha.700" size="18" />
             }
-            borderColor={formik.errors.lastname && "red.400"}
+            borderColor={formik.errors.lastname && 'red.400'}
             errorMessage={formik.touched.lastname && formik.errors.lastname}
-            {...formik.getFieldProps("lastname")}
+            {...formik.getFieldProps('lastname')}
           />
 
           <InputEmail
@@ -161,9 +160,9 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             name="email"
             label="E-mail"
             placeholder="E-mail"
-            borderColor={formik.errors.email && "red.400"}
+            borderColor={formik.errors.email && 'red.400'}
             errorMessage={formik.touched.email && formik.errors.email}
-            {...formik.getFieldProps("email")}
+            {...formik.getFieldProps('email')}
           />
 
           <InputPassword
@@ -171,14 +170,14 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             name="password"
             label="Senha"
             placeholder="Senha"
-            borderColor={formik.errors.password && "red.400"}
+            borderColor={formik.errors.password && 'red.400'}
             errorMessage={formik.touched.password && formik.errors.password}
-            {...formik.getFieldProps("password")}
+            {...formik.getFieldProps('password')}
           />
 
           <Flex>
             <Text color="gray.500" fontSize="xs">
-              Ao se cadastrar, você concorda com os{" "}
+              Ao se cadastrar, você concorda com os{' '}
               <NextLink href="/terms">
                 <Link color={colors.primary.main}>termos de uso</Link>
               </NextLink>
@@ -200,11 +199,11 @@ export const FormSignUp: React.FC<Props> = ({ app, redirectUri, ...props }) => {
           </Button>
 
           <Text textAlign="center" fontSize="sm" marginTop={6}>
-            Já possui uma conta?{" "}
+            Já possui uma conta?{' '}
             <NextLink
               href={{
-                pathname: "/",
-                query: { redirectUri, appId: app && app.id },
+                pathname: '/',
+                query: { redirectUri, appId: app && app.id }
               }}
             >
               <Link

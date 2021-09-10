@@ -1,43 +1,41 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React, { useState } from "react";
-import * as Yup from "yup";
-import { Button } from "~/components/button";
-import { InputEmail } from "~/components/input";
-import { axiosClient } from "~/config/axios";
+import { Flex, Heading, Text } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import * as Yup from 'yup';
+import { Button } from '~/components/ui/button';
+import { InputEmail } from '~/components/ui/input';
+import { clientRestApi } from '~/services/rest-api';
 
 interface Props {}
 
 export const FormForgotPassword: React.FC<Props> = (props) => {
-  const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState('');
   const formik = useFormik({
-    initialValues: { email: "" },
+    initialValues: { email: '' },
     validationSchema: Yup.object({
       email: Yup.string()
-        .email("Endereço de email inválido!")
-        .required("Obrigatório"),
+        .email('Endereço de email inválido!')
+        .required('Obrigatório')
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
-      setSuccess("");
+      setSuccess('');
       try {
-        const response = await axiosClient.post("/passwords/forgot", {
-          email: values.email,
+        const response = await clientRestApi().passwords.forgot({
+          email: values.email
         });
-
-        const data = response.data;
-        if (data) {
-          setSuccess("Foi enviado um email para você trocar sua senha!");
+        if (response) {
+          setSuccess('Foi enviado um email para você trocar sua senha!');
           setSubmitting(false);
           return;
         }
       } catch (error) {}
 
       setErrors({
-        email: "Erro ao solicitar o pedido de alteração de senha!",
+        email: 'Erro ao solicitar o pedido de alteração de senha!'
       });
 
       setSubmitting(false);
-    },
+    }
   });
 
   return (
@@ -51,8 +49,8 @@ export const FormForgotPassword: React.FC<Props> = (props) => {
         <form
           onSubmit={formik.handleSubmit}
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <InputEmail
@@ -60,12 +58,12 @@ export const FormForgotPassword: React.FC<Props> = (props) => {
             name="email"
             label="E-mail"
             placeholder="E-mail"
-            borderColor={formik.errors.email && "red.400"}
+            borderColor={formik.errors.email && 'red.400'}
             errorMessage={formik.touched.email && formik.errors.email}
-            {...formik.getFieldProps("email")}
+            {...formik.getFieldProps('email')}
           />
 
-          {success && <Text color={"green.500"}>{success}</Text>}
+          {success && <Text color={'green.500'}>{success}</Text>}
 
           <Button
             type="submit"

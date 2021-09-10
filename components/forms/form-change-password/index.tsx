@@ -1,50 +1,48 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React, { useState } from "react";
-import * as Yup from "yup";
-import { Button } from "~/components/button";
-import { Input, InputEmail, InputPassword } from "~/components/input";
-import { axiosClient } from "~/config/axios";
+import { Flex, Heading, Text } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import * as Yup from 'yup';
+import { Button } from '~/components/ui/button';
+import { InputEmail, InputPassword } from '~/components/ui/input';
+import { clientRestApi } from '~/services/rest-api';
 
 interface Props {
   readonly code: string;
 }
 
 export const FormChangePassword: React.FC<Props> = ({ code, ...props }) => {
-  const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState('');
   const formik = useFormik({
-    initialValues: { email: "", password: "" },
+    initialValues: { email: '', password: '' },
     validationSchema: Yup.object({
       password: Yup.string()
-        .min(6, "A senha deve conter no mínimo 6 caracteres!")
-        .required("Obrigatório"),
+        .min(6, 'A senha deve conter no mínimo 6 caracteres!')
+        .required('Obrigatório'),
       email: Yup.string()
-        .email("Endereço de email inválido!")
-        .required("Obrigatório"),
+        .email('Endereço de email inválido!')
+        .required('Obrigatório')
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
-      setSuccess("");
+      setSuccess('');
       try {
-        const response = await axiosClient.post("/passwords/change", {
+        const response = await clientRestApi().passwords.change({
           email: values.email,
           password: values.password,
-          code,
+          code
         });
-
-        const data = response.data;
-        if (data) {
-          setSuccess("Senha alterada com sucesso!");
+        if (response) {
+          setSuccess('Senha alterada com sucesso!');
           setSubmitting(false);
           return;
         }
       } catch (error) {}
 
       setErrors({
-        email: "Erro ao alterar sua senha!",
+        email: 'Erro ao alterar sua senha!'
       });
 
       setSubmitting(false);
-    },
+    }
   });
 
   return (
@@ -57,8 +55,8 @@ export const FormChangePassword: React.FC<Props> = ({ code, ...props }) => {
         <form
           onSubmit={formik.handleSubmit}
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <InputEmail
@@ -66,9 +64,9 @@ export const FormChangePassword: React.FC<Props> = ({ code, ...props }) => {
             name="email"
             label="E-mail"
             placeholder="E-mail"
-            borderColor={formik.errors.email && "red.400"}
+            borderColor={formik.errors.email && 'red.400'}
             errorMessage={formik.touched.email && formik.errors.email}
-            {...formik.getFieldProps("email")}
+            {...formik.getFieldProps('email')}
           />
 
           <InputPassword
@@ -76,12 +74,12 @@ export const FormChangePassword: React.FC<Props> = ({ code, ...props }) => {
             name="password"
             label="Nova senha"
             placeholder="Nova senha"
-            borderColor={formik.errors.password && "red.400"}
+            borderColor={formik.errors.password && 'red.400'}
             errorMessage={formik.touched.password && formik.errors.password}
-            {...formik.getFieldProps("password")}
+            {...formik.getFieldProps('password')}
           />
 
-          {success && <Text color={"green.500"}>{success}</Text>}
+          {success && <Text color={'green.500'}>{success}</Text>}
 
           <Button
             type="submit"

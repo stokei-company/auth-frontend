@@ -1,63 +1,63 @@
-import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import NextLink from "next/link";
-import React from "react";
-import * as Yup from "yup";
-import { Button, FacebookButton, GoogleButton } from "~/components/button";
-import { Input, InputEmail, InputPassword } from "~/components/input";
-import { axiosClient } from "~/config/axios";
-import { currentDevice } from "~/services/device";
-import { AppModel } from "~/shared/@types/app";
-import { setToken } from "~/utils/auth";
-import { colors, facebookAuthURI, googleAuthURI } from "~/utils/constants";
-import { AppBox } from "../app-box";
-import { SocialAuthBox } from "../social-auth-box";
+import { Flex, Heading, Link, Text } from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import NextLink from 'next/link';
+import React, { useContext } from 'react';
+import * as Yup from 'yup';
+import { Button } from '~/components/ui/button';
+import { InputEmail, InputPassword } from '~/components/ui/input';
+import { AppContext } from '~/contexts/app';
+import { RootContext } from '~/contexts/root';
+import { currentDevice } from '~/services/device';
+import { clientRestApi } from '~/services/rest-api';
+import { setToken } from '~/utils/auth';
+import { colors } from '~/utils/constants';
+import { AppBox } from '../app-box';
+import { SocialAuthBox } from '../social-auth-box';
 
-interface Props {
-  readonly app: AppModel;
-  readonly redirectUri: string;
-}
+interface FormLoginProps {}
 
-export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
+export const FormLogin: React.FC<FormLoginProps> = ({ ...props }) => {
+  const { app } = useContext(AppContext);
+  const { redirectUri } = useContext(RootContext);
+
   const formik = useFormik({
-    initialValues: { email: "", password: "" },
+    initialValues: { email: '', password: '' },
     validationSchema: Yup.object({
       password: Yup.string()
-        .min(6, "A senha deve conter no mínimo 6 caracteres!")
-        .required("Obrigatório"),
+        .min(6, 'A senha deve conter no mínimo 6 caracteres!')
+        .required('Obrigatório'),
       email: Yup.string()
-        .email("Endereço de email inválido!")
-        .required("Obrigatório"),
+        .email('Endereço de email inválido!')
+        .required('Obrigatório')
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         const device = currentDevice();
-        const response = await axiosClient.post("/default/login", {
+        const response = await clientRestApi().users.login({
           account: {
             email: values.email,
-            password: values.password,
+            password: values.password
           },
           device,
-          redirectUri,
+          redirectUri
         });
 
-        const data = response.data;
-        if (data && data.accessToken) {
-          setToken(data.accessToken);
+        if (response && response.accessToken) {
+          setToken(response.accessToken);
 
-          window.location.href = data.redirectUri;
+          window.location.href = response.redirectUri;
           setSubmitting(false);
           return;
         }
       } catch (error) {}
 
       setErrors({
-        email: "E-mail ou senha inválidos!",
-        password: "E-mail ou senha inválidos!",
+        email: 'E-mail ou senha inválidos!',
+        password: 'E-mail ou senha inválidos!'
       });
 
       setSubmitting(false);
-    },
+    }
   });
 
   return (
@@ -95,8 +95,8 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
         <form
           onSubmit={formik.handleSubmit}
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column'
           }}
         >
           <InputEmail
@@ -104,9 +104,9 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             name="email"
             label="E-mail"
             placeholder="E-mail"
-            borderColor={formik.errors.email && "red.400"}
+            borderColor={formik.errors.email && 'red.400'}
             errorMessage={formik.touched.email && formik.errors.email}
-            {...formik.getFieldProps("email")}
+            {...formik.getFieldProps('email')}
           />
 
           <InputPassword
@@ -114,9 +114,9 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
             name="password"
             label="Senha"
             placeholder="Senha"
-            borderColor={formik.errors.password && "red.400"}
+            borderColor={formik.errors.password && 'red.400'}
             errorMessage={formik.touched.password && formik.errors.password}
-            {...formik.getFieldProps("password")}
+            {...formik.getFieldProps('password')}
           />
 
           <NextLink href="/password/forgot">
@@ -144,11 +144,11 @@ export const FormLogin: React.FC<Props> = ({ app, redirectUri, ...props }) => {
           </Button>
 
           <Text textAlign="center" fontSize="sm" marginTop={6}>
-            Não tem uma conta?{" "}
+            Não tem uma conta?{' '}
             <NextLink
               href={{
-                pathname: "/signup",
-                query: { redirectUri, appId: app && app.id },
+                pathname: '/signup',
+                query: { redirectUri, appId: app && app.id }
               }}
             >
               <Link

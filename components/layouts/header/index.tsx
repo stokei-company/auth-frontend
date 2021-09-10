@@ -1,20 +1,21 @@
-import { Box, Flex, Image, Spacer, Stack } from "@chakra-ui/react";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
-import { useMemo } from "react";
-import { Button, ButtonOutlined } from "~/components/button";
-import { logoUrl } from "~/utils/constants";
+import { Box, Flex, Image, Spacer, Stack } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { useContext, useMemo } from 'react';
+import { Button, ButtonOutlined } from '~/components/ui/button';
+import { AppContext } from '~/contexts/app';
+import { RootContext } from '~/contexts/root';
+import { logoUrl } from '~/utils/constants';
 
-interface Props {
-  readonly redirectUri?: string;
-  readonly appId?: string;
-}
+interface HeaderProps {}
 
-export const Header: React.FC<Props> = ({ redirectUri, appId }) => {
+export const Header: React.FC<HeaderProps> = ({ ...props }) => {
+  const { appId } = useContext(AppContext);
+  const { redirectUri } = useContext(RootContext);
   const router = useRouter();
 
   const loginUri = useMemo(() => {
-    let url = "/";
+    let url = '/';
     if (!redirectUri && !appId) {
       return url;
     }
@@ -25,11 +26,11 @@ export const Header: React.FC<Props> = ({ redirectUri, appId }) => {
     if (redirectUri) {
       items.push(`redirectUri=${redirectUri}`);
     }
-    return url + "?" + items.join("&");
+    return url + '?' + items.join('&');
   }, [redirectUri, appId]);
 
   const signupUri = useMemo(() => {
-    let url = "/signup";
+    let url = '/signup';
     if (!redirectUri && !appId) {
       return url;
     }
@@ -40,14 +41,26 @@ export const Header: React.FC<Props> = ({ redirectUri, appId }) => {
     if (redirectUri) {
       items.push(`redirectUri=${redirectUri}`);
     }
-    return url + "?" + items.join("&");
+    return url + '?' + items.join('&');
   }, [redirectUri, appId]);
 
   return (
-    <Flex width="100%" alignItems="center" paddingY={5} paddingX={10}>
-      <Box margin={["auto", "auto", "0px", "0px"]}>
+    <Flex
+      as="header"
+      width="100%"
+      alignItems="center"
+      paddingY={5}
+      paddingX={10}
+    >
+      <Box margin={['auto', 'auto', '0px', '0px']}>
         <NextLink href="/">
-          <Image height={10} src={logoUrl} cursor="pointer" alt="Logo" />
+          <Image
+            height={10}
+            src={logoUrl}
+            fallbackSrc="/logo.png"
+            cursor="pointer"
+            alt="Logo"
+          />
         </NextLink>
       </Box>
       {/* 
@@ -64,10 +77,10 @@ export const Header: React.FC<Props> = ({ redirectUri, appId }) => {
         <Link>Preços</Link>
       </Stack>
  */}
-      <Spacer display={["none", "none", "flex", "flex"]} />
+      <Spacer display={['none', 'none', 'flex', 'flex']} />
 
       <Stack
-        display={["none", "none", "flex", "flex"]}
+        display={['none', 'none', 'flex', 'flex']}
         direction="row"
         spacing={6}
         align="center"

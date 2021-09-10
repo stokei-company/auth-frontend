@@ -1,31 +1,28 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { FormForgotPassword } from "~/components/forms/form-forgot-password";
-import Struct from "~/components/pages/struct";
+import { Box } from '@chakra-ui/react';
+import { FormForgotPassword } from '~/components/forms/form-forgot-password';
+import { RootLayout } from '~/components/layouts/root';
 
-interface Props {}
+interface ForgotPasswordProps {}
 
-export default function ForgotPassword({ ...props }: Props) {
+export default function ForgotPassword({ ...props }: ForgotPasswordProps) {
   return (
-    <Struct>
-      <Flex
-        justifyContent="center"
-        paddingY={30}
+    <RootLayout>
+      <Box
+        width="full"
+        height="full"
+        maxWidth={['full', 'full', '500px', '500px']}
+        paddingY={8}
       >
         <Box
           width="100%"
-          maxWidth={["100%", "100%", "500px", "500px"]}
-          padding={5}
+          backgroundColor="gray.50"
+          padding={8}
+          borderRadius="sm"
+          overflowY="auto"
         >
-          <Box
-            width="100%"
-            backgroundColor="gray.50"
-            borderRadius="md"
-            padding={16}
-          >
-            <FormForgotPassword />
-          </Box>
+          <FormForgotPassword />
         </Box>
-      </Flex>
-    </Struct>
+      </Box>
+    </RootLayout>
   );
 }
