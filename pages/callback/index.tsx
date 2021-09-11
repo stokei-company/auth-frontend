@@ -5,6 +5,7 @@ import { RootLayout } from '~/components/layouts/root';
 import { BoxResponse } from '~/components/pages/callback/box-response';
 import { Header } from '~/components/pages/callback/header';
 import { DASHBOARD_URL } from '~/environments';
+import { axiosClient } from '~/services/rest-api/clients/axios';
 import { setToken } from '~/utils/auth';
 import { colors } from '~/utils/constants';
 
@@ -17,9 +18,11 @@ export default function Callback({ token, redirectUri, ...props }: Props) {
   const success = token ? true : false;
 
   useEffect(() => {
-    setToken(token);
+    if (token) {
+      setToken(token);
 
-    window.location.href = redirectUri;
+      window.location.href = redirectUri;
+    }
   }, [token, redirectUri]);
 
   return (
@@ -78,8 +81,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (token) {
     setToken(token, context);
-
-    //axios.defaults.headers['Authorization'] = `Bearer ${token}`;
   }
 
   return {
